@@ -23,9 +23,11 @@ public class UsersService {
 	public void init() {
 	}
 
-	public List<User> getUsers() {
+	public List<User> getUsers(User user) {
 		List<User> users = new ArrayList<User>();
-		usersRepository.findAll().forEach(users::add);
+		if (user.getRole().equals("ROLE_ADMIN")) {
+			usersRepository.findAll().forEach(users::add);
+		}		
 		return users;
 	}
 
@@ -37,10 +39,12 @@ public class UsersService {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		user.setCredits(100);
 		usersRepository.save(user);
-	}
-
-	public void deleteUser(Long id) {
-		usersRepository.deleteById(id);
+	}	
+	
+	public void deleteUser(String[] ids) {
+		for(String id : ids){
+			usersRepository.deleteById(Long.parseLong(id));
+		}
 	}
 
 	public User getUserByEmail(String email) {

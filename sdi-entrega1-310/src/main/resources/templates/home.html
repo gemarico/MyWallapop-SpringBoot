@@ -6,8 +6,8 @@
 	<nav th:replace="fragments/nav" />
 	<div class="container" style="text-align: center">
 		<h2 th:text="#{welcome.message}"></h2>
-		<h4 th:text="#{login.private.message}"></h4>		
-		<div class="table-responsive">
+		<h4 th:text="#{login.private.message}"></h4>
+		<div class="table-responsive" sec:authorize="hasRole('ROLE_CLIENT')">
 			<table class="table table-hover">
 				<thead>
 					<tr>
@@ -20,10 +20,15 @@
 					<tr>
 						<td th:text="${completeName}"></td>
 						<td sec:authentication="principal.username"></td>
-						<td th:text="${credits}"> €</td>
+						<td th:text="${credits}">€</td>
 					</tr>
 				</tbody>
 			</table>
+		</div>
+		<div class="container" style="text-align: center"
+			sec:authorize="hasRole('ROLE_ADMIN')">
+			<span th:text="#{user.authenticated}"></span> 
+			<span th:text="${completeName}"></span>
 		</div>
 	</div>
 	<footer th:replace="fragments/footer" />

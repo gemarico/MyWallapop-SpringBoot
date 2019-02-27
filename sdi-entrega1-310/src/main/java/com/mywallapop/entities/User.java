@@ -13,6 +13,7 @@ public class User {
 	private String email;
 	private double credits;
 	private String password;
+	private String role;
 	@Transient
 	private String passwordConfirm;
 
@@ -21,8 +22,7 @@ public class User {
 		this.name = name;
 		this.lastName = lastName;
 		this.email = email;
-		this.credits=100;
-
+		this.credits = 100;
 	}
 
 	public User() {
@@ -85,7 +85,18 @@ public class User {
 	}
 
 	public String getFullName() {
-		return getName() + " " + getLastName();
+		if (getLastName() != null)
+			return getName() + " " + getLastName();
+		else
+			return getName();
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 }
