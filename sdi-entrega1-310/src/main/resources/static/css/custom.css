@@ -14,7 +14,9 @@ body {
 	font-variant: normal;
 }
 
-
+h4{
+	text-decoration: underline;
+}
 
 footer {
 	position: absolute;

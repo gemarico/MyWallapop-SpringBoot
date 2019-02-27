@@ -23,6 +23,26 @@
 						<td th:text="${credits}">€</td>
 					</tr>
 				</tbody>
+				</table>
+			<h4 th:text="#{offers.active.message}"></h4>	
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th th:text="#{offer.title}"></th>
+						<th th:text="#{offer.date}"></th>
+						<th th:text="#{offer.description}"></th>
+						<th th:text="#{offer.price}"></th>
+					</tr>
+				</thead>	
+				
+				<tbody>
+					<tr th:each="offer : ${offerList}">
+						<td th:text="${offer.title}"></td>
+						<td th:text="${offer.date}"></td>
+						<td th:text="${offer.description}"></td>
+						<td th:text="${offer.price}"></td>						
+					</tr>
+				</tbody>
 			</table>
 		</div>
 		<div class="container" style="text-align: center"

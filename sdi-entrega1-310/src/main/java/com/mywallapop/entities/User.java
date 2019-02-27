@@ -1,6 +1,11 @@
 package com.mywallapop.entities;
 
+import java.util.Set;
+
 import javax.persistence.*;
+
+
+
 
 @Entity
 public class User {
@@ -16,6 +21,8 @@ public class User {
 	private String role;
 	@Transient
 	private String passwordConfirm;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private Set<Offer> offers;
 
 	public User(String name, String lastName, String email) {
 		super();
@@ -97,6 +104,14 @@ public class User {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+	
+	public void setOffers(Set<Offer> offers) {
+		this.offers = offers;
+	}
+
+	public Set<Offer> getOffers() {
+		return offers;
 	}
 
 }

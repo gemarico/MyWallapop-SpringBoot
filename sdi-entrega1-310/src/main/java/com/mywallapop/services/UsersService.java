@@ -27,9 +27,11 @@ public class UsersService {
 		List<User> users = new ArrayList<User>();
 		if (user.getRole().equals("ROLE_ADMIN")) {
 			usersRepository.findAll().forEach(users::add);
-		}		
+		}
+		users.remove(getUserByEmail("admin@email.com"));
 		return users;
 	}
+	
 
 	public User getUser(Long id) {
 		return usersRepository.findById(id).get();
@@ -39,12 +41,12 @@ public class UsersService {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		user.setCredits(100);
 		usersRepository.save(user);
-	}	
-	
+	}
+
 	public void deleteUser(String[] ids) {
-		for(String id : ids){
+		for (String id : ids) {
 			usersRepository.deleteById(Long.parseLong(id));
-		}
+			}
 	}
 
 	public User getUserByEmail(String email) {
