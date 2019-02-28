@@ -40,7 +40,10 @@
 						<td th:text="${offer.title}"></td>
 						<td th:text="${offer.date}"></td>
 						<td th:text="${offer.description}"></td>
-						<td th:text="${offer.price}"></td>						
+						<td th:text="${offer.price}"></td>	
+						<td><a sec:authorize="hasRole('ROLE_CLIENT')"
+							th:href="${'/offer/delete/' + offer.id}"
+							th:text="#{delete.message}"></a></td>					
 					</tr>
 				</tbody>
 			</table>

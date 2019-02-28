@@ -22,7 +22,9 @@ public class User {
 	@Transient
 	private String passwordConfirm;
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private Set<Offer> offers;
+	private Set<Offer> offersBought;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private Set<Offer> offersCreated;
 
 	public User(String name, String lastName, String email) {
 		super();
@@ -106,12 +108,20 @@ public class User {
 		this.role = role;
 	}
 	
-	public void setOffers(Set<Offer> offers) {
-		this.offers = offers;
+	public void setOffersCreated(Set<Offer> offers) {
+		this.offersCreated = offers;
 	}
 
-	public Set<Offer> getOffers() {
-		return offers;
+	public Set<Offer> getOffersCreated() {
+		return offersCreated;
+	}
+	
+	public void setOffersBought(Set<Offer> offers) {
+		this.offersBought = offers;
+	}
+
+	public Set<Offer> getOffersBought() {
+		return offersBought;
 	}
 
 }

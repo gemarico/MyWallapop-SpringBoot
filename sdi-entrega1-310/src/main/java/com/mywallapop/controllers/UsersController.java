@@ -64,7 +64,7 @@ public class UsersController {
 		String email = auth.getName();
 		User activeUser = usersService.getUserByEmail(email);
 		model.addAttribute("credits", activeUser.getCredits());
-		model.addAttribute("offerList", activeUser.getOffers());
+		model.addAttribute("offerList", activeUser.getOffersCreated());
 		model.addAttribute("completeName", activeUser.getFullName());
 		return "home";
 	}

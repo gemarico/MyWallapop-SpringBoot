@@ -21,19 +21,21 @@ public class Offer {
 	@DateTimeFormat (pattern="yyyy-MM-dd")
 	private Date date;
 	private double price;
+	private boolean sold;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
 	
 
-	public Offer(String title, String description, Date date, double price, User user) {
+	public Offer(String title, String description, Date date, double price, User user, boolean sold) {
 		super();
 		this.title = title;
 		this.date= date;
 		this.description = description;		
 		this.price = price;
 		this.user = user;
+		this.sold= sold;
 	}
 
 	public Offer() {
@@ -85,6 +87,14 @@ public class Offer {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public boolean isSold() {
+		return sold;
+	}
+
+	public void setSold(boolean sold) {
+		this.sold = sold;
 	}
 
 	
