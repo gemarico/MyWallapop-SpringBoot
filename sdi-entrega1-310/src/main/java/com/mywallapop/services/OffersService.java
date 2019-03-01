@@ -42,8 +42,8 @@ public class OffersService {
 		offersRepository.deleteById(id);
 	}
 
-	public void buyOffer(boolean b, Long id) {
-		offersRepository.deleteById(id);
+	public void buyOffer(User activeUser, Long id) {
+		
 
 	}
 

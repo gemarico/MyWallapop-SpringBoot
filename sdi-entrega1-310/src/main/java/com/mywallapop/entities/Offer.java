@@ -1,15 +1,10 @@
 package com.mywallapop.entities;
 
-
-
-
 import java.sql.Date;
 
 import javax.persistence.*;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
-
 
 @Entity
 public class Offer {
@@ -18,24 +13,27 @@ public class Offer {
 	private long id;
 	private String title;
 	private String description;
-	@DateTimeFormat (pattern="yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date date;
 	private double price;
 	private boolean sold;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
-	
 
-	public Offer(String title, String description, Date date, double price, User user, boolean sold) {
+	@OneToOne
+	@JoinColumn(name = "purchase_id")
+	private Purchase purchase;
+
+	public Offer(String title, String description, Date date, double price, User user) {
 		super();
 		this.title = title;
-		this.date= date;
-		this.description = description;		
+		this.date = date;
+		this.description = description;
 		this.price = price;
 		this.user = user;
-		this.sold= sold;
+		
 	}
 
 	public Offer() {
@@ -80,7 +78,7 @@ public class Offer {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	
+
 	public User getUser() {
 		return user;
 	}
@@ -97,6 +95,12 @@ public class Offer {
 		this.sold = sold;
 	}
 
-	
+	public Purchase getPurchase() {
+		return purchase;
+	}
+
+	public void setPurchase(Purchase purchase) {
+		this.purchase = purchase;
+	}
 
 }

@@ -12,6 +12,10 @@
 		<div class="collapse navbar-collapse" id="myNavbar">
 			<ul class="nav navbar-nav" sec:authorize="isAuthenticated()">
 				<li><a href="/" th:text="#{home.message}"></a></li>
+				
+				<li id="offers-menu" class="dropdown"
+					sec:authorize="hasRole('ROLE_CLIENT')">
+					<a href="/catalogue" th:text="Catalogo"></a></li>
 	            <li><a href="/home" th:text="#{login.private.message}"></a></li>
 				<li id="users-menu" class="dropdown"
 					sec:authorize="hasRole('ROLE_ADMIN')"><a

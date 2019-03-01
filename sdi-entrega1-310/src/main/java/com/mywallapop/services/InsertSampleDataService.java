@@ -20,7 +20,6 @@ public class InsertSampleDataService {
 	@Autowired
 	private UsersService usersService;
 
-	
 	@PostConstruct
 	public void init() throws ParseException {
 
@@ -57,13 +56,14 @@ public class InsertSampleDataService {
 			private static final long serialVersionUID = 1L;
 
 			{
-				add(new Offer("Batidora", "Batidora americana con 3 modos",  convertDate("2018-08-25") , 40.99, user1,true));
-				add(new Offer("Camiseta", "Camiseta de Dior", convertDate("2018-01-04"), 115.0, user1,false));
-				add(new Offer("IPhone", "No funciona", convertDate("2019-01-20"), 1.0, user1,false));
+
+				add(new Offer("Batidora", "Batidora americana con 3 modos", convertDate("2018-08-25"), 40.99, user1));
+				add(new Offer("Camiseta", "Camiseta de Dior", convertDate("2018-01-04"), 115.0, user1));
+				add(new Offer("IPhone", "No funciona", convertDate("2019-01-20"), 1.0, user1));
 
 			}
 		};
-		user1.setOffersCreated(user1Offers);
+		user1.setOffers(user1Offers);
 
 		Set<Offer> user2Offers = new HashSet<Offer>() {
 			/**
@@ -72,11 +72,11 @@ public class InsertSampleDataService {
 			private static final long serialVersionUID = 1L;
 
 			{
-				add(new Offer("Batidora", "sadasdasd", convertDate("2018-05-16"), 10.0, user2,true));
+				add(new Offer("Batidora", "sadasdasd", convertDate("2018-05-16"), 10.0, user2));
 
 			}
 		};
-		user2.setOffersCreated(user2Offers);
+		user2.setOffers(user2Offers);
 
 		Set<Offer> user3Offers = new HashSet<Offer>() {
 			/**
@@ -85,11 +85,11 @@ public class InsertSampleDataService {
 			private static final long serialVersionUID = 1L;
 
 			{
-				add(new Offer("Batidora", "sadasdasd", convertDate("2017-03-27"), 10.0, user3,false));
+				add(new Offer("Batidora", "sadasdasd", convertDate("2017-03-27"), 10.0, user3));
 
 			}
 		};
-		user3.setOffersCreated(user3Offers);
+		user3.setOffers(user3Offers);
 
 		Set<Offer> user4Offers = new HashSet<Offer>() {
 			/**
@@ -98,11 +98,11 @@ public class InsertSampleDataService {
 			private static final long serialVersionUID = 1L;
 
 			{
-				add(new Offer("Batidora", "sadasdasd", convertDate("2019-02-14"), 10.0, user4,false));
+				add(new Offer("Batidora", "sadasdasd", convertDate("2019-02-14"), 10.0, user4));
 
 			}
 		};
-		user4.setOffersCreated(user4Offers);
+		user4.setOffers(user4Offers);
 
 		Set<Offer> user5Offers = new HashSet<Offer>() {
 			/**
@@ -111,11 +111,12 @@ public class InsertSampleDataService {
 			private static final long serialVersionUID = 1L;
 
 			{
-				add(new Offer("Batidora", "sadasdasd", convertDate("2018-05-08"), 10.0, user5,false));
+
+				add(new Offer("Batidora", "sadasdasd", convertDate("2018-05-08"), 10.0, user5));
 
 			}
 		};
-		user5.setOffersCreated(user5Offers);
+		user5.setOffers(user5Offers);
 
 		usersService.addUser(user1);
 		usersService.addUser(user2);
@@ -125,7 +126,7 @@ public class InsertSampleDataService {
 		usersService.addUser(admin);
 
 	}
-	
+
 	private Date convertDate(String date) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		java.util.Date d = sdf.parse(date);

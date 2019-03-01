@@ -4,9 +4,6 @@ import java.util.Set;
 
 import javax.persistence.*;
 
-
-
-
 @Entity
 public class User {
 	@Id
@@ -21,10 +18,12 @@ public class User {
 	private String role;
 	@Transient
 	private String passwordConfirm;
+
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private Set<Offer> offersBought;
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private Set<Offer> offersCreated;
+	private Set<Offer> offers;
+
+	@OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL)
+	private Set<Purchase> purchased;
 
 	public User(String name, String lastName, String email) {
 		super();
@@ -107,21 +106,21 @@ public class User {
 	public void setRole(String role) {
 		this.role = role;
 	}
-	
-	public void setOffersCreated(Set<Offer> offers) {
-		this.offersCreated = offers;
+
+	public Set<Offer> getOffers() {
+		return offers;
 	}
 
-	public Set<Offer> getOffersCreated() {
-		return offersCreated;
-	}
-	
-	public void setOffersBought(Set<Offer> offers) {
-		this.offersBought = offers;
+	public void setOffers(Set<Offer> offers) {
+		this.offers = offers;
 	}
 
-	public Set<Offer> getOffersBought() {
-		return offersBought;
+	public Set<Purchase> getPurchased() {
+		return purchased;
+	}
+
+	public void setPurchased(Set<Purchase> purchased) {
+		this.purchased = purchased;
 	}
 
 }

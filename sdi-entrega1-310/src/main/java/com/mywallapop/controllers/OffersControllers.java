@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.mywallapop.entities.Offer;
 import com.mywallapop.entities.User;
 import com.mywallapop.services.OffersService;
+import com.mywallapop.services.PurchaseService;
 import com.mywallapop.services.UsersService;
 import com.mywallapop.validators.AddOfferFormValidator;
 
@@ -31,6 +32,9 @@ public class OffersControllers {
 
 	@Autowired
 	private UsersService usersService;
+	
+	@Autowired
+	private PurchaseService purchaseService;
 
 	@Autowired
 	private AddOfferFormValidator addOfferFormValidator;
@@ -75,7 +79,10 @@ public class OffersControllers {
 
 	@RequestMapping(value = "/catalogue/buy/{id}", method = RequestMethod.GET)
 	public String buyOffer(Model model, @PathVariable Long id) {
-		offersService.buyOffer(true, id);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User activeUser = usersService.getUserByEmail(auth.getName());
+		purchaseService.buyOffer(activeUser, offersService.getOffer(id));
+		
 		return "redirect:/catalogue";
 	}
 

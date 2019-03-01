@@ -47,6 +47,28 @@
 					</tr>
 				</tbody>
 			</table>
+			
+			<h4 th:text="#{offers.bought.message}"></h4>	
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th th:text="#{offer.title}"></th>
+						<th th:text="#{offer.description}"></th>
+						<th th:text="#{offer.price}"></th>
+						<th th:text="#{user.email}"></th>
+					</tr>
+				</thead>	
+				
+				<tbody>
+					<tr th:each="purchase : ${purchasedList}">
+						<td th:text="${purchase.getTitle()}"></td>		
+						<td th:text="${purchase.getDescription()}"></td>				
+						<td th:text="${purchase.getPrice()}"></td>	
+						<td th:text="${purchase.getEmail()}"></td>
+											
+					</tr>
+				</tbody>
+			</table>
 		</div>
 		<div class="container" style="text-align: center"
 			sec:authorize="hasRole('ROLE_ADMIN')">
