@@ -11,7 +11,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import com.mywallapop.entities.Message;
+import com.mywallapop.entities.Offer;
 import com.mywallapop.entities.User;
+import com.mywallapop.services.ConversationsService;
+import com.mywallapop.services.OffersService;
 import com.mywallapop.services.SecurityService;
 import com.mywallapop.services.UsersService;
 import com.mywallapop.validators.SignUpFormValidator;
@@ -20,6 +24,12 @@ import com.mywallapop.validators.SignUpFormValidator;
 public class UsersController {
 	@Autowired
 	private UsersService usersService;
+
+	@Autowired
+	private OffersService offersService;
+
+	@Autowired
+	private ConversationsService conversService;
 
 	@Autowired
 	private SignUpFormValidator signUpFormValidator;
@@ -47,7 +57,7 @@ public class UsersController {
 			return "signup";
 		}
 
-		usersService.addUser(user);
+		usersService.addUser(user,100);
 		securityService.autoLogin(user.getEmail(), user.getPasswordConfirm());
 		return "redirect:home";
 	}
@@ -74,4 +84,63 @@ public class UsersController {
 	public String login(Model model) {
 		return "login";
 	}
+
+	@RequestMapping(value = "/user/addmessage/{id}", method = RequestMethod.GET)
+	public String getmessage(Model model, @PathVariable Long id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		User activeUser = usersService.getUserByEmail(email);
+		model.addAttribute("offer", offersService.getOffer(id));
+		model.addAttribute("message", new Message());
+		model.addAttribute("user", activeUser);
+
+		return "user/addmessage";
+	}
+
+	@RequestMapping(value = "/user/conver/{id}", method = RequestMethod.POST)
+	public String conver(Model model, Message message, BindingResult result, @PathVariable Long id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User activeUser = usersService.getUserByEmail(auth.getName());
+		Offer offer = offersService.getOffer(id);
+		conversService.addMessage(offer, activeUser, message);
+		return "user/conver";
+	}
+
+	@RequestMapping(value = "/user/conver/{id}", method = RequestMethod.GET)
+	public String getconver(Model model, @PathVariable Long id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		User activeUser = usersService.getUserByEmail(email);
+		model.addAttribute("message", new Message());
+		model.addAttribute("user", activeUser);
+		model.addAttribute("offer", conversService.getConver(id).getOffer());
+		model.addAttribute("messagesList", conversService.getMessages(conversService.getConver(id), activeUser));
+		return "user/conver";
+	}
+
+	@RequestMapping(value = "/user/addmessage/{id}", method = RequestMethod.POST)
+	public String addmessage(Model model, Message message, BindingResult result, @PathVariable Long id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User activeUser = usersService.getUserByEmail(auth.getName());
+		Offer offer = offersService.getOffer(id);
+		conversService.addMessage(offer, activeUser, message);
+		return "redirect:/user/messagelist";
+	}
+
+	@RequestMapping(value = "/user/messagelist", method = RequestMethod.GET)
+	public String listmessage(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		User activeUser = usersService.getUserByEmail(email);
+		model.addAttribute("user", activeUser);
+		model.addAttribute("recievedList", conversService.getConversation(activeUser));
+		return "user/messagelist";
+	}
+
+	@RequestMapping("/user/conver/delete/{id}")
+	public String deleteConver(@PathVariable String id) {
+		conversService.delete(Long.parseLong(id));
+		return "redirect:/user/messagelist";
+	}
+
 }

@@ -8,13 +8,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.mywallapop.entities.Conversation;
 import com.mywallapop.entities.User;
+import com.mywallapop.repositories.ConverRepository;
 import com.mywallapop.repositories.UsersRepository;
 
 @Service
 public class UsersService {
+
 	@Autowired
 	private UsersRepository usersRepository;
+
+	@Autowired
+	private ConverRepository conversRepository;
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -31,25 +37,29 @@ public class UsersService {
 		users.remove(getUserByEmail("admin@email.com"));
 		return users;
 	}
-	
 
 	public User getUser(Long id) {
 		return usersRepository.findById(id).get();
 	}
 
-	public void addUser(User user) {
+	public void addUser(User user, double credits) {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-		user.setCredits(100);
+		user.setCredits(credits);
 		usersRepository.save(user);
+		
 	}
 
 	public void deleteUser(String[] ids) {
 		for (String id : ids) {
-			usersRepository.deleteById(Long.parseLong(id));
-			}
+			List<Conversation> convers = conversRepository.findByUser(getUser(Long.parseLong(id)));
+			conversRepository.deleteAll(convers);
+			usersRepository.delete(getUser(Long.parseLong(id)));
+		}
+
 	}
 
 	public User getUserByEmail(String email) {
 		return usersRepository.findByEmail(email);
 	}
+
 }

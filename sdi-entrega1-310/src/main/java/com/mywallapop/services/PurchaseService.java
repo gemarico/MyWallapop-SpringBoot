@@ -22,13 +22,11 @@ public class PurchaseService {
 	
 	public void buyOffer(User user, Offer offer) {
 		Purchase purchase = new Purchase(offer, user);
-		if(user.getCredits()>=offer.getPrice()) {
+		if(user.getCredits()>=offer.getPrice() && user.getEmail()!= offer.getUser().getEmail()) {
 			offer.setSold(true);
 			user.setCredits(user.getCredits()-offer.getPrice());
 			addPurchase(purchase);
 		}
-			
-		
 	}
 
 }

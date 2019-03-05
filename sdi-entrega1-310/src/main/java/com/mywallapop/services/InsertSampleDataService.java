@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mywallapop.entities.Offer;
+import com.mywallapop.entities.Purchase;
 import com.mywallapop.entities.User;
 
 @Service
@@ -57,9 +58,9 @@ public class InsertSampleDataService {
 
 			{
 
-				add(new Offer("Batidora", "Batidora americana con 3 modos", convertDate("2018-08-25"), 40.99, user1));
-				add(new Offer("Camiseta", "Camiseta de Dior", convertDate("2018-01-04"), 115.0, user1));
 				add(new Offer("IPhone", "No funciona", convertDate("2019-01-20"), 1.0, user1));
+				add(new Offer("Camiseta", "Camiseta de Dior", convertDate("2018-01-04"), 115.0, user1));
+				add(new Offer("Batidora", "Batidora americana con 3 modos", convertDate("2018-08-25"), 40.99, user1));
 
 			}
 		};
@@ -72,7 +73,9 @@ public class InsertSampleDataService {
 			private static final long serialVersionUID = 1L;
 
 			{
-				add(new Offer("Batidora", "sadasdasd", convertDate("2018-05-16"), 10.0, user2));
+				add(new Offer("Coche", "Coche nuevo", convertDate("2018-05-16"), 100.0, user2));
+				add(new Offer("Libro", "Harry Potter y el cáliz de fuego", convertDate("2018-05-16"), 5.0, user2));
+				add(new Offer("Botella", "Ecológica", convertDate("2018-05-16"), 4.0, user2));
 
 			}
 		};
@@ -85,7 +88,10 @@ public class InsertSampleDataService {
 			private static final long serialVersionUID = 1L;
 
 			{
-				add(new Offer("Batidora", "sadasdasd", convertDate("2017-03-27"), 10.0, user3));
+
+				add(new Offer("Set Maquillaje", "Maybelline", convertDate("2017-03-27"), 40.0, user3));
+				add(new Offer("Marco", "para fotos", convertDate("2017-03-27"), 10.0, user3));
+				add(new Offer("Nevera", "Sin usar", convertDate("2017-03-27"), 500.0, user3));
 
 			}
 		};
@@ -98,7 +104,9 @@ public class InsertSampleDataService {
 			private static final long serialVersionUID = 1L;
 
 			{
-				add(new Offer("Batidora", "sadasdasd", convertDate("2019-02-14"), 10.0, user4));
+				add(new Offer("Casco de moto", "regulable", convertDate("2019-02-14"), 700.0, user4));
+				add(new Offer("Lámpara", "sin bombilla", convertDate("2019-02-14"), 15.0, user4));
+				add(new Offer("Play 4", "con dos mandos", convertDate("2019-02-14"), 200.0, user4));
 
 			}
 		};
@@ -112,19 +120,60 @@ public class InsertSampleDataService {
 
 			{
 
-				add(new Offer("Batidora", "sadasdasd", convertDate("2018-05-08"), 10.0, user5));
+				add(new Offer("Champú", "anticaspa", convertDate("2018-05-08"), 1.0, user5));
+				add(new Offer("Velas", "con aroma a vainilla", convertDate("2018-05-08"), 10.0, user5));
+				add(new Offer("Guitarra", "acoústica", convertDate("2018-05-08"), 30.0, user5));
 
 			}
 		};
 		user5.setOffers(user5Offers);
+		
+		
+		
 
-		usersService.addUser(user1);
-		usersService.addUser(user2);
-		usersService.addUser(user3);
-		usersService.addUser(user4);
-		usersService.addUser(user5);
-		usersService.addUser(admin);
 
+		Offer offer1 = getOffer(user1);
+		Set<Purchase> purchased1 = new HashSet<Purchase>();
+		Purchase purchase1 = new Purchase(offer1, user4);
+		purchased1.add(purchase1);
+		user4.setPurchased(purchased1);
+		offer1.setSold(true);
+		
+
+		Offer offer2 = getOffer(user2);
+		Set<Purchase> purchased2 = new HashSet<Purchase>();
+		Purchase purchase2 = new Purchase(offer2, user5);
+		purchased2.add(purchase2);
+		user5.setPurchased(purchased2);
+		offer2.setSold(true);
+		
+
+		Offer offer3 = getOffer(user3);
+		Set<Purchase> purchased3 = new HashSet<Purchase>();
+		Purchase purchase3 = new Purchase(offer3, user1);
+		purchased1.add(purchase3);
+		offer3.setSold(true);
+		user1.setPurchased(purchased3);
+		
+
+		Offer offer4 = getOffer(user4);
+		Set<Purchase> purchased4 = new HashSet<Purchase>();
+		Purchase purchase4 = new Purchase(offer4, user2);
+		purchased2.add(purchase4);
+		user2.setPurchased(purchased4);
+		offer4.setSold(true);
+		
+		
+		usersService.addUser(user1,(100 - offer3.getPrice()));
+		usersService.addUser(user2,(100 - offer4.getPrice()));
+		usersService.addUser(user3,100);
+		usersService.addUser(user4,(100 - offer1.getPrice()));
+		usersService.addUser(user5,(100 - offer2.getPrice()));
+		usersService.addUser(admin,0);
+		
+		
+
+		
 	}
 
 	private Date convertDate(String date) throws ParseException {
@@ -132,6 +181,16 @@ public class InsertSampleDataService {
 		java.util.Date d = sdf.parse(date);
 		Date sqlDate = new Date(d.getTime());
 		return sqlDate;
+	}
+
+	private Offer getOffer(User user) {
+
+		for (Offer o : user.getOffers()) {
+			if (o.getPrice() < 100)
+				return o;
+		}
+
+		return null;
 	}
 
 }

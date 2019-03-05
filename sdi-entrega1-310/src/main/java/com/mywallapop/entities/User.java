@@ -19,18 +19,21 @@ public class User {
 	@Transient
 	private String passwordConfirm;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user",  cascade=CascadeType.ALL)
 	private Set<Offer> offers;
 
-	@OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "buyer", cascade=CascadeType.ALL)
 	private Set<Purchase> purchased;
+
+	@OneToMany(mappedBy = "sender", cascade=CascadeType.ALL)
+	private Set<Conversation> conversations;
 
 	public User(String name, String lastName, String email) {
 		super();
 		this.name = name;
 		this.lastName = lastName;
 		this.email = email;
-		this.credits = 100;
+		this.credits = -100.0;
 	}
 
 	public User() {
@@ -122,5 +125,15 @@ public class User {
 	public void setPurchased(Set<Purchase> purchased) {
 		this.purchased = purchased;
 	}
+
+	public Set<Conversation> getConversations() {
+		return conversations;
+	}
+
+	public void setConversations(Set<Conversation> conversations) {
+		this.conversations = conversations;
+	}
+	
+	
 
 }

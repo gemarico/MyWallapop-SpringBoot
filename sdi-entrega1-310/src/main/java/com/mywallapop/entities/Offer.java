@@ -1,6 +1,7 @@
 package com.mywallapop.entities;
 
 import java.sql.Date;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -17,14 +18,18 @@ public class Offer {
 	private Date date;
 	private double price;
 	private boolean sold;
+	private boolean flash;
 
-	@ManyToOne
+	@ManyToOne()
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@OneToOne
+	@OneToOne()
 	@JoinColumn(name = "purchase_id")
 	private Purchase purchase;
+
+	@OneToMany(mappedBy = "offer", cascade=CascadeType.ALL)
+	private Set<Conversation> conversations;
 
 	public Offer(String title, String description, Date date, double price, User user) {
 		super();
@@ -33,7 +38,7 @@ public class Offer {
 		this.description = description;
 		this.price = price;
 		this.user = user;
-		
+
 	}
 
 	public Offer() {
@@ -102,5 +107,28 @@ public class Offer {
 	public void setPurchase(Purchase purchase) {
 		this.purchase = purchase;
 	}
+
+	public Set<Conversation> getConversations() {
+		return conversations;
+	}
+
+	public void setConversations(Set<Conversation> conversations) {
+		this.conversations = conversations;
+	}
+
+	public void addMessage(Conversation conversation) {
+
+		getConversations().add(conversation);
+	}
+
+	public boolean isFlash() {
+		return flash;
+	}
+
+	public void setFlash(boolean flash) {
+		this.flash = flash;
+	}
+	
+	
 
 }

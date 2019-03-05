@@ -1,60 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head th:replace="fragments/head" />
+<head th:replace="fragments/head"></head>
+<nav th:replace="fragments/nav"></nav>
 <body>
-
-	<!-- Barra de Navegación superior -->
-	<nav th:replace="fragments/nav" />
-
-	<div class="container">
-		<h2 th:text="#{offer.add}"></h2>
-		<form class="form-horizontal" method="post" action="/offer/add"
-			th:object="${offer}">
-
-
-			<div class="form-group">
-				<label class="control-label col-sm-2" for="pwd"
-					th:text="#{offer.title}"></label>
-				<div class="col-sm-10">
-					<input type="text" class="form-control" name="title"
-						th:placeholder="#{title.placeholder}" required="true" /> <span
-						class="text-danger" th:if="${#fields.hasErrors('title')}"
-						th:errors="*{title}"></span>
+		<div class="container">
+			<h2 th:text="#{offer.add}"></h2>
+			<form class="form-horizontal justify-content-center" method="post" action="/offer/add" th:object="${offer}">
+				<div class="form-group">
+					<label  for="pwd"
+						th:text="#{offer.title}"></label>
+					<div>
+						<input type="text" class="form-control" name="title"
+							th:placeholder="#{title.placeholder}" required="true"> <span
+							class="text-danger"
+							th:if="${#fields.hasErrors('title')}"
+							th:errors="*{title}"></span>
+					</div>
 				</div>
-			</div>
-
-
-			<div class="form-group">
-				<label class="control-label col-sm-2" for="pwd"
-					th:text="#{offer.description}"></label>
-				<div class="col-sm-10">
-					<input type="text" class="form-control" name="description"
-						th:placeholder="#{description.placeholder}" required="true" /> <span
-						class="text-danger" th:if="${#fields.hasErrors('description')}"
-						th:errors="*{description}"></span>
+				<div class="form-group">
+					<label for="pwd"
+						th:text="#{offer.description}"></label>
+					<div >
+						<input type="text" class="form-control" name="description"
+							th:placeholder="#{description.placeholder}" required="true">
+						<span class="text-danger"
+							th:if="${#fields.hasErrors('description')}"
+							th:errors="*{description}"></span>
+					</div>
 				</div>
-			</div>
+				<div class="form-group">
+					<label for="pwd"
+						th:text="#{offer.flash}"></label>
+					 <input type="checkbox"
+						th:value="${offer.id}" name="id"> 
 
-			<div class="form-group">
-				<label class="control-label col-sm-2" for="pwd"
-					th:text="#{offer.price}"></label>
-				<div class="col-sm-10">
-					<input type="number" class="form-control" name="price" step=".01"
-						th:placeholder="#{price.placeholder}" required="true" /> <span
-						class="text-danger" th:if="${#fields.hasErrors('price')}"
-						th:errors="*{price}"></span>
 				</div>
-			</div>
-			<div class="form-group">
-				<div class="col-sm-offset-2 col-sm-10">
-					<button type="submit" class="btn btn-primary"
-						th:text="#{send.message}"></button>
+				<div class="form-group">
+					<label for="pwd"
+						th:text="#{offer.price}"></label>
+					<div>
+						<input type="number" class="form-control" name="price" step=".01"
+							th:placeholder="#{price.placeholder}" required="true"> <span
+							class="text-danger"
+							th:if="${#fields.hasErrors('price')}"
+							th:errors="*{price}"></span>
+					</div>
 				</div>
-			</div>
-		</form>
-	</div>
-
-	<footer th:replace="fragments/footer" />
-
+				<div class="form-group">
+					<div>
+						<button type="submit" class="btn btn-primary"
+							th:text="#{send.message}"></button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<footer th:replace="fragments/footer"></footer>
+	
 </body>
+
 </html>

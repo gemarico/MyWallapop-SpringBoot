@@ -20,8 +20,6 @@ public class OffersService {
 	@Autowired
 	private OffersRepository offersRepository;
 
-	private Date now = new Date(new java.util.Date().getTime());
-
 	public List<Offer> getOffersCreated() {
 		List<Offer> offers = new ArrayList<Offer>();
 		offersRepository.findAll().forEach(offers::add);
@@ -32,9 +30,13 @@ public class OffersService {
 		return offersRepository.findById(id).get();
 	}
 
-	public void addOffer(Offer offer, User activeUser) {
+	public void addOffer(Offer offer, User activeUser, String id) {
+		if (id != null) {
+			offer.setFlash(true);
+			activeUser.setCredits(activeUser.getCredits() - 20);
+		}
 		offer.setUser(activeUser);
-		offer.setDate(now);
+		offer.setDate(new Date(new java.util.Date().getTime()));
 		offersRepository.save(offer);
 	}
 
@@ -42,20 +44,20 @@ public class OffersService {
 		offersRepository.deleteById(id);
 	}
 
-	public void buyOffer(User activeUser, Long id) {
-		
-
-	}
-
-	public Page<Offer> getOffers(Pageable pageable) {
-		Page<Offer> offers = offersRepository.findAll(pageable);
+	public Page<Offer> getOffers(Pageable pageable, User user) {
+		Page<Offer> offers = offersRepository.searchOffersTobuy(pageable, user);
 		return offers;
 	}
 
-	public Page<Offer> searchOffersByTitle(Pageable pageable, String searchText) {
+	public Page<Offer> getFlashOffers(Pageable pageable, User user) {
+		Page<Offer> offers = offersRepository.findFlashOffer(pageable, user);
+		return offers;
+	}
+
+	public Page<Offer> searchOffersByTitle(Pageable pageable, String searchText, User user) {
 		Page<Offer> offers = new PageImpl<Offer>(new LinkedList<Offer>());
 		searchText = "%" + searchText + "%";
-		offers = offersRepository.searchByTitle(pageable, searchText);
+		offers = offersRepository.searchByTitle(pageable, searchText, user);
 		return offers;
 	}
 
