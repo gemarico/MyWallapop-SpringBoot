@@ -3,9 +3,11 @@
 <head th:replace="fragments/head"></head>
 <nav th:replace="fragments/nav"></nav>
 <body>
-            <div class="container" style="text-align: center">
+            <div class="container white" >
                 	<h2 th:text="#{welcome.message}"></h2>
                 	<h4 th:text="#{login.private.message}"></h4>
+                	 <hr>
+                	  <hr>
                 <div class="table table-responsive" sec:authorize="hasRole('ROLE_CLIENT')">
                     <table class="table table-hover"  th:fragment="tableOffers"
 					id="tableOffers">
@@ -24,7 +26,11 @@
                             </tr>
                         </tbody>
                     </table>
+                    <hr>
+                    <hr>
                     	<h4 th:text="#{offers.active.message}"></h4>
+                    	 <hr>
+                    	  <hr>
                    <div class="table table-responsive">
                     <table class="table table-hover">
                         <thead>
@@ -56,7 +62,11 @@
                         </tbody>
                     </table>
                     </div>	
-                    	<h4 th:text="#{offers.bought.message}"></h4>	
+                    <hr>
+                    <hr>
+                    	<h4 th:text="#{offers.bought.message}"></h4>
+                    	 <hr>
+                    	  <hr>	
                      <div class="table table-responsive">
                     <table class="table table-hover">
                         <thead>

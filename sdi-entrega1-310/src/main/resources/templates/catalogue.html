@@ -3,26 +3,28 @@
 <head th:replace="fragments/head"></head>
 <nav th:replace="fragments/nav"></nav>
 <body>
-	<div class="container" style="text-align: center">
+	<div class="container white" style="text-align: center">
 		<h2 th:text="#{catalogue.message}"></h2>
 		<h4 th:text="#{catalogue.description.message}"></h4>
-
 
 		<form class="form-horizontal justify-content-center"
 			action="/catalogue">
 			<div class="form-group">
 				<input name="searchText" type="text" class="form-control" size="50">
 			</div>
-			<button type="submit" class="btn btn-secondary"
+			<button type="submit" class="btn btn-primary"
 				th:text="#{search.message}"></button>
 		</form>
-
+		<hr>
+        <hr>
 		<div class="fixed-top">
 			<div class="alert fixed-top alert-danger collapse" id="alert"
 				th:text="#{notCredits}"></div>
 		</div>
 
 		<h4 th:text="#{offers.title.flash}"></h4>
+		<hr>
+        <hr>
 		<div class="table table-responsive" sec:authorize="hasRole('ROLE_CLIENT')">
 			<table class="table table-hover" th:fragment="tableFlash"
 				id="tableFlash">
@@ -81,8 +83,11 @@
 				</tbody>
 			</table>
 		</div>
-
+<hr>
+        <hr>
 		<h4 th:text="#{offers.title}"></h4>
+		<hr>
+        <hr>
 		<div class="table table-responsive" sec:authorize="hasRole('ROLE_CLIENT')">
 			<table class="table table-hover" th:fragment="tableOffers"
 				id="tableOffers">
