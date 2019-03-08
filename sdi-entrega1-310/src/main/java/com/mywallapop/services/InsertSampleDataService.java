@@ -15,6 +15,11 @@ import org.springframework.stereotype.Service;
 import com.mywallapop.entities.Message;
 import com.mywallapop.entities.Offer;
 import com.mywallapop.entities.User;
+import com.mywallapop.repositories.ConverRepository;
+import com.mywallapop.repositories.MessagesRepository;
+import com.mywallapop.repositories.OffersRepository;
+import com.mywallapop.repositories.PurchaseRepository;
+import com.mywallapop.repositories.UsersRepository;
 
 @Service
 public class InsertSampleDataService {
@@ -30,6 +35,21 @@ public class InsertSampleDataService {
 
 	@Autowired
 	private ConversationsService converService;
+	
+	@Autowired
+	private UsersRepository usersRepo;
+
+	@Autowired
+	private OffersRepository offersRepo;
+
+	@Autowired
+	private PurchaseRepository purchaseRepo;
+
+	@Autowired
+	private ConverRepository converRepo;
+	
+	@Autowired
+	private MessagesRepository mesagesRepo;
 
 	@PostConstruct
 	public void init() throws ParseException {
@@ -253,6 +273,14 @@ public class InsertSampleDataService {
 
 	public Timestamp getTime() {
 		return new Timestamp(new java.util.Date().getTime());
+	}
+	
+	public void deleteBBDD() {
+		usersRepo.deleteAll();
+		offersRepo.deleteAll();
+		purchaseRepo.deleteAll();
+		converRepo.deleteAll();
+		mesagesRepo.deleteAll();
 	}
 
 }

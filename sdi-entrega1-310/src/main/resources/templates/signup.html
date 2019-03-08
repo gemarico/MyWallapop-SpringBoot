@@ -10,9 +10,9 @@
 					<label for="email"
 						th:text="#{email.message}"></label>
 					<div>
-						<input type="email" class="form-control" name="email"
+						<input type="email" class="form-control" name="email" id="email"
 							th:placeholder="#{email.placeholder}" required="true"> <span
-							class="text-danger"
+							class="text-danger" 
 							th:if="${#fields.hasErrors('email')}"
 							th:errors="*{email}"></span>
 					</div>
@@ -21,7 +21,7 @@
 					<label for="name"
 						th:text="#{name.message}"></label>
 					<div>
-						<input type="text" class="form-control" name="name"
+						<input type="text" class="form-control" name="name" id="name"
 							th:placeholder="#{name.placeholder}" required="true"> <span
 							class="text-danger"
 							th:if="${#fields.hasErrors('name')}"
@@ -32,7 +32,7 @@
 					<label for="lastName"
 						th:text="#{lastName.message}"></label>
 					<div>
-						<input type="text" class="form-control" name="lastName"
+						<input type="text" class="form-control" name="lastName" id="lastName"
 							th:placeholder="#{lastName.placeholder}" required="true">
 						<span class="text-danger"
 							th:if="${#fields.hasErrors('lastName')}"
@@ -43,8 +43,8 @@
 					<label for="password"
 						th:text="#{password.message}"></label>
 					<div>
-						<input type="password" class="form-control" name="password"
-							th:placeholder="#{password.placeholder}"> <span
+						<input type="password" class="form-control" name="password" id="password"
+							th:placeholder="#{password.placeholder}" required="true"> <span
 							class="text-danger"
 							th:if="${#fields.hasErrors('password')}"
 							th:errors="*{password}"></span>
@@ -54,8 +54,8 @@
 					<label  for="passwordConfirm"
 						th:text="#{passwordConfirm.message}"></label>
 					<div>
-						<input type="password" class="form-control" name="passwordConfirm"
-							th:placeholder="#{passwordConfirm.placeholder}"> <span
+						<input type="password" class="form-control" name="passwordConfirm" id="passwordConfirm"
+							th:placeholder="#{passwordConfirm.placeholder}" required="true"> <span
 							class="text-danger"
 							th:if="${#fields.hasErrors('passwordConfirm')}"
 							th:errors="*{passwordConfirm}"></span>
@@ -63,7 +63,7 @@
 				</div>
 				<div class="form-group">
 					<div>
-						<button type="submit" class="btn btn-primary"
+						<button type="submit" class="btn btn-primary" id="submit"
 							th:text="#{send.message}"></button>
 					</div>
 				</div>
