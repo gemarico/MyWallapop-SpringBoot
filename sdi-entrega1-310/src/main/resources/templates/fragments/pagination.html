@@ -18,6 +18,6 @@
 		th:text="${page.getNumber()+2}"></a></li>
 	<!-- Última -->
 	<li class="page-item"><a class="page-link"
-		th:href="@{'?page=';+${page.getTotalPages()-1}}"
+		th:href="@{'?page='+${page.getTotalPages()-1}}"
 		th:text="#{last.page}"></a></li>
 </ul>

@@ -22,7 +22,7 @@ public class SignUpFormValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		User user = (User) target;
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "Error.empty");
-		if (user.getEmail().length() < 5 || user.getEmail().length() > 24 || !user.getEmail().contains("@")) {
+		if (user.getEmail().length() < 5 || !user.getEmail().contains("@")) {
 			errors.rejectValue("email", "Error.signup.email.format");
 		}
 

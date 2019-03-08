@@ -3,8 +3,6 @@ package com.mywallapop.services;
 import java.sql.Timestamp;
 import java.util.*;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,23 +22,21 @@ public class ConversationsService {
 	@Autowired
 	private ConverRepository converRepository;
 
-	@PostConstruct
-	public void init() {
-	}
-
 	public void addMessage(Offer offer, User user, Message message) {
-		Conversation conver = new Conversation(user, offer);
+		Conversation conver;
 
-		if (getConverbyOffer(offer, user) == null) {
-			conver = new Conversation(user, offer);
-		} else {
+		if (getConverbyOffer(offer, user) != null) {
 			conver = getConverbyOffer(offer, user);
+		} else {
+			conver = new Conversation(user, offer);
 		}
 		message.setAuthor(user.getFullName());
 		message.setConversation(conver);
 		message.setDate(new Timestamp(new java.util.Date().getTime()));
-		messagesRepository.save(message);		
-		conver.addMessage(message);
+		message.setConversation(conver);
+		converRepository.save(conver);
+		messagesRepository.save(message);
+
 	}
 
 	public List<Message> getMessages(Conversation conversation, User user) {
@@ -65,7 +61,30 @@ public class ConversationsService {
 
 	public void delete(Long id) {
 		converRepository.delete(getConver(id));
-		
+
+	}
+
+	public void addConver(Conversation conver) {
+		converRepository.save(conver);
+	}
+
+	public void addMessages(Offer offer, User user, Set<Message> messages) {
+		Conversation conver;
+
+		if (getConverbyOffer(offer, user) != null) {
+			conver = getConverbyOffer(offer, user);
+		} else {
+			conver = new Conversation(user, offer);
+		}
+
+		for (Message m : messages) {
+			m.setConversation(conver);
+			m.setConversation(conver);
+		}
+		conver.setMessages(messages);
+		converRepository.save(conver);
+		messagesRepository.saveAll(messages);
+
 	}
 
 }

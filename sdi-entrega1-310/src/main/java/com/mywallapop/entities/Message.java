@@ -3,7 +3,6 @@ package com.mywallapop.entities;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -20,7 +19,7 @@ public class Message {
 
 	private Timestamp date;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne()
 	@JoinColumn(name = "conversation_id")
 	private Conversation conversation;
 

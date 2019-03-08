@@ -1,5 +1,6 @@
 package com.mywallapop.entities;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -20,20 +21,20 @@ public class User {
 	private String passwordConfirm;
 
 	@OneToMany(mappedBy = "user",  cascade=CascadeType.ALL)
-	private Set<Offer> offers;
+	private Set<Offer> offers = new HashSet<Offer>();
 
 	@OneToMany(mappedBy = "buyer", cascade=CascadeType.ALL)
-	private Set<Purchase> purchased;
+	private Set<Purchase> purchased = new HashSet<Purchase>();
 
 	@OneToMany(mappedBy = "sender", cascade=CascadeType.ALL)
-	private Set<Conversation> conversations;
+	private Set<Conversation> conversations = new HashSet<Conversation>();
 
 	public User(String name, String lastName, String email) {
 		super();
 		this.name = name;
 		this.lastName = lastName;
 		this.email = email;
-		this.credits = -100.0;
+		this.credits = 100.0;
 	}
 
 	public User() {

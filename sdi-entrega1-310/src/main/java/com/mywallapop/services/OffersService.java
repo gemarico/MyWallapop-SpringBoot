@@ -1,7 +1,6 @@
 package com.mywallapop.services;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.mywallapop.entities.Offer;
 import com.mywallapop.entities.User;
 import com.mywallapop.repositories.OffersRepository;
+import com.mywallapop.repositories.UsersRepository;
 
 @Service
 public class OffersService {
@@ -20,10 +20,12 @@ public class OffersService {
 	@Autowired
 	private OffersRepository offersRepository;
 
-	public List<Offer> getOffersCreated() {
-		List<Offer> offers = new ArrayList<Offer>();
-		offersRepository.findAll().forEach(offers::add);
-		return offers;
+	@Autowired
+	private UsersRepository usersRepository;
+
+	public List<Offer> getOffersCreated(User user) {
+		return offersRepository.findAllbyUser(user);
+
 	}
 
 	public Offer getOffer(Long id) {
@@ -37,7 +39,10 @@ public class OffersService {
 		}
 		offer.setUser(activeUser);
 		offer.setDate(new Date(new java.util.Date().getTime()));
+		activeUser.getOffers().add(offer);
 		offersRepository.save(offer);
+		usersRepository.save(activeUser);
+
 	}
 
 	public void deleteOffer(Long id) {

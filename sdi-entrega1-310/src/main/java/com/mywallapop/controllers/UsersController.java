@@ -16,6 +16,7 @@ import com.mywallapop.entities.Offer;
 import com.mywallapop.entities.User;
 import com.mywallapop.services.ConversationsService;
 import com.mywallapop.services.OffersService;
+import com.mywallapop.services.PurchaseService;
 import com.mywallapop.services.SecurityService;
 import com.mywallapop.services.UsersService;
 import com.mywallapop.validators.SignUpFormValidator;
@@ -27,6 +28,9 @@ public class UsersController {
 
 	@Autowired
 	private OffersService offersService;
+
+	@Autowired
+	private PurchaseService purchaseService;
 
 	@Autowired
 	private ConversationsService conversService;
@@ -57,7 +61,7 @@ public class UsersController {
 			return "signup";
 		}
 
-		usersService.addUser(user,100);
+		usersService.addUser(user);
 		securityService.autoLogin(user.getEmail(), user.getPasswordConfirm());
 		return "redirect:home";
 	}
@@ -74,8 +78,8 @@ public class UsersController {
 		String email = auth.getName();
 		User activeUser = usersService.getUserByEmail(email);
 		model.addAttribute("credits", activeUser.getCredits());
-		model.addAttribute("offerList", activeUser.getOffers());
-		model.addAttribute("purchasedList", activeUser.getPurchased());
+		model.addAttribute("offerList", offersService.getOffersCreated(activeUser));
+		model.addAttribute("purchasedList", purchaseService.getOffersPurchased(activeUser));
 		model.addAttribute("completeName", activeUser.getFullName());
 		return "home";
 	}
@@ -93,7 +97,6 @@ public class UsersController {
 		model.addAttribute("offer", offersService.getOffer(id));
 		model.addAttribute("message", new Message());
 		model.addAttribute("user", activeUser);
-
 		return "user/addmessage";
 	}
 

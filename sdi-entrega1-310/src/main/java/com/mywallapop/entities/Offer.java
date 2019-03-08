@@ -1,6 +1,7 @@
 package com.mywallapop.entities;
 
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -29,7 +30,7 @@ public class Offer {
 	private Purchase purchase;
 
 	@OneToMany(mappedBy = "offer", cascade=CascadeType.ALL)
-	private Set<Conversation> conversations;
+	private Set<Conversation> conversations = new HashSet<Conversation>();
 
 	public Offer(String title, String description, Date date, double price, User user) {
 		super();

@@ -37,14 +37,12 @@ public class OffersControllers {
 
 	@Autowired
 	private AddOfferFormValidator addOfferFormValidator;
-	
+
 	@RequestMapping(value = "/offer/add")
 	public String getOffer(Model model) {
 		model.addAttribute("offer", new Offer());
 		return "offer/add";
 	}
-	
-	
 
 	@RequestMapping(value = "/offer/add", method = RequestMethod.POST)
 	public String setOffer(Model model, @Validated Offer offer, BindingResult result, @RequestParam("id") String id) {
@@ -54,7 +52,7 @@ public class OffersControllers {
 		if (result.hasErrors()) {
 			return "offer/add";
 		}
-		
+
 		offersService.addOffer(offer, activeUser, id);
 		return "redirect:/home";
 	}
@@ -66,11 +64,11 @@ public class OffersControllers {
 	}
 
 	@RequestMapping(value = "/catalogue", method = RequestMethod.GET)
-	public String showCatalogue(Model model, Pageable pageable, 
+	public String showCatalogue(Model model, Pageable pageable,
 			@RequestParam(value = "", required = false) String searchText) {
-		
+
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		User activeUser = usersService.getUserByEmail(auth.getName());	
+		User activeUser = usersService.getUserByEmail(auth.getName());
 		Page<Offer> offers = new PageImpl<Offer>(new LinkedList<Offer>());
 		Page<Offer> flash = new PageImpl<Offer>(new LinkedList<Offer>());
 		if (searchText != null && !searchText.isEmpty()) {
@@ -78,9 +76,9 @@ public class OffersControllers {
 			flash = offersService.getFlashOffers(pageable, activeUser);
 		} else {
 			offers = offersService.getOffers(pageable, activeUser);
-			flash = offersService. getFlashOffers(pageable, activeUser);
+			flash = offersService.getFlashOffers(pageable, activeUser);
 		}
-		
+
 		model.addAttribute("offerList", offers);
 		model.addAttribute("flashList", flash);
 		model.addAttribute("List", offers);
@@ -93,41 +91,39 @@ public class OffersControllers {
 	@RequestMapping(value = "/catalogue/buyOffer/{id}", method = RequestMethod.POST)
 	public String buyOffer(Model model, @PathVariable Long id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		User activeUser = usersService.getUserByEmail(auth.getName());		
-		purchaseService.buyOffer(activeUser, offersService.getOffer(id));		
+		User activeUser = usersService.getUserByEmail(auth.getName());
+		purchaseService.buyOffer(activeUser, offersService.getOffer(id));
 		return "redirect:/catalogue/update";
 
 	}
-	
+
 	@RequestMapping(value = "/catalogue/buyFlash/{id}", method = RequestMethod.POST)
 	public String buyFlash(Model model, @PathVariable Long id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		User activeUser = usersService.getUserByEmail(auth.getName());		
-		purchaseService.buyOffer(activeUser, offersService.getOffer(id));		
+		User activeUser = usersService.getUserByEmail(auth.getName());
+		purchaseService.buyOffer(activeUser, offersService.getOffer(id));
 		return "redirect:/catalogue/update/flash";
 
 	}
 
 	@RequestMapping("/catalogue/update")
-	public String updateCatalogue(Model model, Pageable pageable) {		
+	public String updateCatalogue(Model model, Pageable pageable) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User activeUser = usersService.getUserByEmail(auth.getName());
 		model.addAttribute("offerList", offersService.getOffers(pageable, activeUser));
 		model.addAttribute("user", activeUser);
 		return "catalogue :: tableOffers";
-		
+
 	}
-	
+
 	@RequestMapping("/catalogue/update/flash")
-	public String updateFlash(Model model, Pageable pageable) {		
+	public String updateFlash(Model model, Pageable pageable) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User activeUser = usersService.getUserByEmail(auth.getName());
 		model.addAttribute("flashList", offersService.getFlashOffers(pageable, activeUser));
 		model.addAttribute("user", activeUser);
 		return "catalogue :: tableFlash";
-		
+
 	}
-	
-	
 
 }

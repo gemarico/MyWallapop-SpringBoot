@@ -3,97 +3,102 @@
 <head th:replace="fragments/head"></head>
 <nav th:replace="fragments/nav"></nav>
 <body>
-            <div class="container white" >
-                	<h2 th:text="#{welcome.message}"></h2>
-                	<h4 th:text="#{login.private.message}"></h4>
-                	 <hr>
-                	  <hr>
-                <div class="table table-responsive" sec:authorize="hasRole('ROLE_CLIENT')">
-                    <table class="table table-hover"  th:fragment="tableOffers"
-					id="tableOffers">
-                        <thead>
-                            <tr>
-                                <th  th:text="#{name.message}"></th>
-                                <th  th:text="#{email.message}"></th>
-                                <th  th:text="#{user.credits}"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td th:text="${completeName}"></td>
-                                <td  sec:authentication="principal.username"></td>
-                                <td  th:text="${credits}">&#x20AC;</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <hr>
-                    <hr>
-                    	<h4 th:text="#{offers.active.message}"></h4>
-                    	 <hr>
-                    	  <hr>
-                   <div class="table table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th  th:text="#{offer.title}"></th>
-                                <th  th:text="#{offer.date}"></th>
-                                <th  th:text="#{offer.description}"></th>
-                                <th  th:text="#{offer.price}"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="offer : ${offerList}">
-                                <td  th:text="${offer.title}"></td>
-                                <td  th:text="${offer.date}"></td>
-                                <td  th:text="${offer.description}"></td>
-                                <td  th:text="${offer.price}"></td>
-                                
-                                <td > <div th:if="${offer.sold}">
-                                <p th:text="#{sold.message}"></p>
-                                    </div>
-                                </td>    
-                                
-                                <td > 
-                                <a sec:authorize="hasRole('ROLE_CLIENT')" th:href="${'/offer/delete/' + offer.id}"
-                                    th:text="#{delete.message}"></a>
-                                    
-                                </td>                                
-                            </tr>
-                        </tbody>
-                    </table>
-                    </div>	
-                    <hr>
-                    <hr>
-                    	<h4 th:text="#{offers.bought.message}"></h4>
-                    	 <hr>
-                    	  <hr>	
-                     <div class="table table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th  th:text="#{offer.title}"></th>
-                                <th  th:text="#{offer.description}"></th>
-                                <th th:text="#{buyer.message}"></th>
-                                <th th:text="#{offer.price}"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="purchase : ${purchasedList}">
-                                <td  th:text="${purchase.getTitle()}"></td>
-                                <td  th:text="${purchase.getDescription()}"></td>
-                                <td  th:text="${purchase.getOfferEmail()}"></td>
-                                <td  th:text="${purchase.getPrice()}"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    </div>	
-                </div>
-                <div class="container" style="text-align: center" sec:authorize="hasRole('ROLE_ADMIN')">	
-                <span th:text="#{user.authenticated}"></span> 	<span th:text="${completeName}"></span>
-                </div>
-            </div>
-            <footer th:replace="fragments/footer"></footer>
-       
-    </body>
+
+
+	<h2 th:text="#{welcome.message}"></h2>
+	<h4 th:text="#{login.private.message}"></h4>
+	<div class="container white">
+
+		
+		
+		<div class="table table-responsive"
+			sec:authorize="hasRole('ROLE_CLIENT')">
+			<table class="table table-hover" th:fragment="tableOffers"
+				id="tableOffers">
+				<thead>
+					<tr>
+						<th th:text="#{name.message}"></th>
+						<th th:text="#{email.message}"></th>
+						<th th:text="#{user.credits}"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td th:text="${completeName}"></td>
+						<td sec:authentication="principal.username"></td>
+						<td th:text="${credits}">&#x20AC;</td>
+					</tr>
+				</tbody>
+			</table>
+			<hr>
+			<hr>
+			<h4 th:text="#{offers.active.message}"></h4>
+			<hr>
+			<hr>
+			<div class="table table-responsive">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th th:text="#{offer.title}"></th>
+							<th th:text="#{offer.date}"></th>
+							<th th:text="#{offer.description}"></th>
+							<th th:text="#{offer.price}"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="offer : ${offerList}">
+							<td th:text="${offer.title}"></td>
+							<td th:text="${offer.date}"></td>
+							<td th:text="${offer.description}"></td>
+							<td th:text="${offer.price}"></td>
+
+							<td>
+								<div th:if="${offer.sold}">
+									<p th:text="#{sold.message}"></p>
+								</div>
+							</td>
+
+							<td><a sec:authorize="hasRole('ROLE_CLIENT')"
+								th:href="${'/offer/delete/' + offer.id}"
+								th:text="#{delete.message}"></a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<hr>
+			<hr>
+			<h4 th:text="#{offers.bought.message}"></h4>
+			<hr>
+			<hr>
+			<div class="table table-responsive">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th th:text="#{offer.title}"></th>
+							<th th:text="#{offer.description}"></th>
+							<th th:text="#{buyer.message}"></th>
+							<th th:text="#{offer.price}"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="purchase : ${purchasedList}">
+							<td th:text="${purchase.getTitle()}"></td>
+							<td th:text="${purchase.getDescription()}"></td>
+							<td th:text="${purchase.getOfferEmail()}"></td>
+							<td th:text="${purchase.getPrice()}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="container" style="text-align: center"
+			sec:authorize="hasRole('ROLE_ADMIN')">
+			<span th:text="#{user.authenticated}"></span> <span
+				th:text="${completeName}"></span>
+		</div>
+	</div>
+	<footer th:replace="fragments/footer"></footer>
+
+</body>
 
 </html>

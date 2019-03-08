@@ -4,69 +4,74 @@
 html {
 	position: relative;
 	min-height: 100%;
-	background: url("/img/fondo.jpg");
-	background-size: cover;
 }
 
-body {
+body {	
 	margin-bottom: 60px;
 	font-family: Raleway;
 	font-style: normal;
 	font-variant: normal;
 	text-align: center;
-	background: url("/img/fondo.jpg");
+	background: url("/img/fondo-b.jpg");
 	background-size: cover;
-	
+	background-position: center center;	
+	background-repeat: no-repeat;
 }
 
-.container.white{
- text-align: center; 
- background-color: white;
- 
+@media screen and (max-width: 700px) {
+	body {
+		font-size: 11px;
+			    
+	}
+	h1, h2, h3, h4 {
+		font-size: 12px;
+	}
 }
 
+.container.white {
+	margin-top: 40px;
+	text-align: center;
+	background-color: white;
+}
 
-
-
-input{
-	border: 1px solid black;  
+input {
+	border: 1px solid black;
 	outline: 2px solid grey;
 }
-label{
-	color:black;
+
+label {
+	color: black;
 }
 
 textarea {
-  resize: none;
-  margin-bottom: 20px;
-  border: 1px solid black;  
-  outline: 2px solid grey;
-  
-}
-
-h1,h2,h3,h4{
-	
-	margin-top: 20px;
+	resize: none;
 	margin-bottom: 20px;
+	border: 1px solid black;
+	outline: 2px solid grey;
 }
 
-hr{
+h1, h2 {
+	margin-top: 40px;
+}
+
+hr {
 	border: 1px solid black;
 }
-pagination{
+
+pagination {
 	margin-top: 20px;
 }
 
 footer {
 	position: absolute;
-	margin-top:60px;
+	margin-top: 60px;
 	bottom: 0;
 	width: 100%;
 	height: 60px;
 	background-color: #101010;
 	text-align: center;
 	line-height: 60px;
-	z-index: 999
+	z-index: 999;
 }
 
 /* Sticky footer styles-------------------------------------------------- */
