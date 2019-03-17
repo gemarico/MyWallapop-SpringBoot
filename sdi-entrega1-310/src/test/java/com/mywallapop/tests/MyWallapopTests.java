@@ -12,13 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.mywallapop.entities.User;
 import com.mywallapop.services.InsertSampleDataService;
+import com.mywallapop.services.OffersService;
 import com.mywallapop.services.UsersService;
 import com.mywallapop.tests.pageobjects.PO_HomeView;
 import com.mywallapop.tests.pageobjects.PO_LoginView;
-import com.mywallapop.tests.pageobjects.PO_NavView;
-import com.mywallapop.tests.pageobjects.PO_PrivateView;
-import com.mywallapop.tests.pageobjects.PO_Properties;
+import com.mywallapop.tests.pageobjects.PO_NewOfferView;
 import com.mywallapop.tests.pageobjects.PO_RegisterView;
 import com.mywallapop.tests.pageobjects.PO_View;
 import com.mywallapop.tests.util.SeleniumUtils;
@@ -42,6 +42,12 @@ public class MyWallapopTests {
 	@Autowired
 	private InsertSampleDataService init;
 
+	@Autowired
+	private UsersService userService;
+
+	@Autowired
+	private OffersService offersService;
+
 	@Before
 	public void setUp() throws ParseException {
 		init.deleteBBDD();
@@ -52,14 +58,14 @@ public class MyWallapopTests {
 	// Después de cada prueba se borran las cookies del navegador
 	@After
 	public void tearDown() throws ParseException {
-		
+
 		driver.manage().deleteAllCookies();
 	}
 
 	// Antes de la primera prueba
 	@BeforeClass
 	static public void begin() {
-		
+
 	}
 
 	// Al finalizar la última prueba
@@ -70,7 +76,7 @@ public class MyWallapopTests {
 	}
 
 	static String PathFirefox65 = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
-	static String Geckdriver024 = "C:\\Users\\Niobe\\Downloads\\PL-SDI-Sesión5-material\\PL-SDI-Sesión5-material\\geckodriver024win64.exe";
+	static String Geckdriver024 = "C:\\Users\\Niobe\\Downloads\\geckodriver024win64.exe";
 	static WebDriver driver = getDriver(PathFirefox65, Geckdriver024);
 	static String URL = "http://localhost:8090";
 
@@ -101,7 +107,7 @@ public class MyWallapopTests {
 		driver.findElement(By.id("password")).getAttribute("validationMessage");
 		PO_RegisterView.fillForm(driver, "josefo@email.com", "Josefo", "Perez", "77777", "");
 		driver.findElement(By.id("passwordConfirm")).getAttribute("validationMessage");
-		
+
 	}
 
 	@Test
@@ -145,7 +151,6 @@ public class MyWallapopTests {
 		PO_LoginView.fillForm(driver, "gema@email.com", "");
 		driver.findElement(By.id("password")).getAttribute("validationMessage");
 	}
-	
 
 	@Test
 	public void PR08() {
@@ -167,7 +172,7 @@ public class MyWallapopTests {
 		PO_LoginView.fillForm(driver, "gema@email.com", "123456");
 		PO_View.checkElement(driver, "text", "Área privada");
 		PO_HomeView.clickOption(driver, "logout", "class", "btn btn-primary");
-		PO_View.checkElement(driver, "text", "Inicia Sesión");
+		PO_View.checkElement(driver, "text", "Inicia sesión");
 	}
 
 	@Test
@@ -178,112 +183,143 @@ public class MyWallapopTests {
 		PO_View.checkElement(driver, "text", "Área privada");
 		PO_HomeView.clickOption(driver, "logout", "class", "btn btn-primary");
 		driver.findElements(By.id("logout")).isEmpty();
-		
+
 	}
 
-	
 	@Test
 	public void PR12() {
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
 		PO_LoginView.fillForm(driver, "admin@email.com", "admin");
 		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "users-menu", PO_View.getTimeout());
 		elementos.get(0).click();
-		PO_HomeView.clickOption(driver, "/user/list", "class", "/user/list");
-		PO_View.checkElement(driver, "id", "tableUsers");
-		
-		
+		PO_HomeView.clickOption(driver, "/user/list", "class", "btn btn-primary");
+		assertTrue(driver.findElements(By.xpath("//table[@id='tableUsers']/tbody/tr")).size() == 5);
+
 	}
 
-	// PR13. Loguearse como estudiante y ver los detalles de la nota con Descripcion
-	// = Nota A2.
-	// P13. Ver la lista de Notas.
 	@Test
 	public void PR13() {
-		// Vamos al formulario de logueo.
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-		// Rellenamos el formulario
-		PO_LoginView.fillForm(driver, "99999990A", "123456");
-		// COmprobamos que entramos en la pagina privada de Alumno
-		PO_View.checkElement(driver, "text", "Notas del usuario");
-		SeleniumUtils.esperarSegundos(driver, 1);
-		// Contamos las notas
-		By enlace = By.xpath("//td[contains(text(), 'Nota A2')]/followingsibling::*[2]");
-		driver.findElement(enlace).click();
-		SeleniumUtils.esperarSegundos(driver, 1);
-		// Esperamos por la ventana de detalle
-		PO_View.checkElement(driver, "text", "Detalles de la nota");
-		SeleniumUtils.esperarSegundos(driver, 1);
-		// Ahora nos desconectamos
-
-		PO_PrivateView.clickOption(driver, "logout", "text", "Identifícate");
+		PO_LoginView.fillForm(driver, "admin@email.com", "admin");
+		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "users-menu", PO_View.getTimeout());
+		elementos.get(0).click();
+		PO_HomeView.clickOption(driver, "/user/list", "class", "btn btn-primary");
+		assertTrue(driver.findElements(By.xpath("//table[@id='tableUsers']/tbody/tr")).size() == 5);
+		List<WebElement> checks = driver.findElements(By.xpath("//input[@type='checkbox']"));
+		checks.get(0).click(); // borramos al primer usuario gema@email.com
+		driver.findElement(By.id("botonS")).click();
+		assertTrue(driver.findElements(By.xpath("//table[@id='tableUsers']/tbody/tr")).size() == 4);
+		assertTrue(userService.getUserByEmail("gema@email.com") == null);
 	}
 
-	// P14. Loguearse como profesor y Agregar Nota A2.
-	// P14. Esta prueba podría encapsularse mejor ...
 	@Test
 	public void PR14() {
-		// Vamos al formulario de logueo.
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-		// Rellenamos el formulario
-		PO_LoginView.fillForm(driver, "99999993D", "123456");
-		// COmprobamos que entramos en la pagina privada del Profesor
-		PO_View.checkElement(driver, "text", "99999993D");
-		// Pinchamos en la opción de menu de Notas: //li[contains(@id, 'marks-menu')]/a
-		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li[contains(@id,'marks-menu')]/a");
+		PO_LoginView.fillForm(driver, "admin@email.com", "admin");
+		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "users-menu", PO_View.getTimeout());
 		elementos.get(0).click();
-		// Esperamos a aparezca la opción de añadir nota: //a[contains(@href,
-		// 'mark/add')]
-		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href, 'mark/add')]");
-		// Pinchamos en agregar Nota.
-		elementos.get(0).click();
-		// Ahora vamos a rellenar la nota. //option[contains(@value, '4')]
-		PO_PrivateView.fillFormAddMark(driver, 3, "Nota Nueva 1", "8");
-		// Esperamos a que se muestren los enlaces de paginación la lista de notas
-		elementos = PO_View.checkElement(driver, "free", "//a[contains(@class, 'page-link')]");
-		// Nos vamos a la última página
-		elementos.get(3).click();
-		// Comprobamos que aparece la nota en la pagina
-		elementos = PO_View.checkElement(driver, "text", "Nota Nueva 1");
-		// Ahora nos desconectamos
-		PO_PrivateView.clickOption(driver, "logout", "text", "Identifícate");
+		PO_HomeView.clickOption(driver, "/user/list", "class", "btn btn-primary");
+		assertTrue(driver.findElements(By.xpath("//table[@id='tableUsers']/tbody/tr")).size() == 5);
+		List<WebElement> checks = driver.findElements(By.xpath("//input[@type='checkbox']"));
+		checks.get(checks.size() - 1).click(); // borramos al ultimo usuario pedro@email.com
+		driver.findElement(By.id("botonS")).click();
+		assertTrue(driver.findElements(By.xpath("//table[@id='tableUsers']/tbody/tr")).size() == 4);
+		assertTrue(userService.getUserByEmail("pedro@email.com") == null);
 	}
 
-	// PRN. Loguearse como profesor, vamos a la ultima página y Eliminamos la Nota
-	// Nueva 1.
-	// PRN. Ver la lista de Notas.
 	@Test
-
 	public void PR15() {
-		// Vamos al formulario de logueo.
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-		// Rellenamos el formulario
-		PO_LoginView.fillForm(driver, "99999993D", "123456");
-		// COmprobamos que entramos en la pagina privada del Profesor
-		PO_View.checkElement(driver, "text", "99999993D");
-		// Pinchamos en la opción de menu de Notas: //li[contains(@id, 'marks-menu')]/a
-		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li[contains(@id, 'marks-menu')]/a");
+		PO_LoginView.fillForm(driver, "admin@email.com", "admin");
+		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "users-menu", PO_View.getTimeout());
 		elementos.get(0).click();
-		// Pinchamos en la opción de lista de notas.
-		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href,'mark/list')]");
+		PO_HomeView.clickOption(driver, "/user/list", "class", "btn btn-primary");
+		assertTrue(driver.findElements(By.xpath("//table[@id='tableUsers']/tbody/tr")).size() == 5);
+		List<WebElement> checks = driver.findElements(By.xpath("//input[@type='checkbox']"));
+		// Borramos a los 3 primeros usuarios
+		checks.get(0).click(); // gema@email.com
+		checks.get(1).click(); // cristina@email.com
+		checks.get(2).click(); // christian@email.com
+		driver.findElement(By.id("botonS")).click();
+		assertTrue(driver.findElements(By.xpath("//table[@id='tableUsers']/tbody/tr")).size() == 2);
+		assertTrue(userService.getUserByEmail("gema@email.com") == null);
+		assertTrue(userService.getUserByEmail("cristina@email.com") == null);
+		assertTrue(userService.getUserByEmail("christian@email.com") == null);
+	}
+
+	@Test
+	public void PR16() {
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		PO_LoginView.fillForm(driver, "gema@email.com", "123456");
+		assertTrue(driver.findElements(By.xpath("//table[@id='createdOffers']/tbody/tr")).size() == 3);
+
+		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "offersCreating-menu",
+				PO_View.getTimeout());
 		elementos.get(0).click();
-		// Esperamos a que se muestren los enlaces de paginacion la lista de notas
-		elementos = PO_View.checkElement(driver, "free", "//a[contains(@class, 'pagelink')]");
-		// Nos vamos a la última página
-		elementos.get(3).click();
-		// Esperamos a que aparezca la Nueva nota en la ultima pagina
-		// Y Pinchamos en el enlace de borrado de la Nota "Nota Nueva 1"
-		// td[contains(text(), 'Nota Nueva 1')]/following-sibling::*/a[contains(text(),
-		// 'mark/delete')]"
-		elementos = PO_View.checkElement(driver, "free",
-				"//td[contains(text(), 'Nota Nueva 1')]/following-sibling::*/a[contains(@href, 'mark/delete')]");
+		PO_HomeView.clickOption(driver, "/offer/add", "class", "btn btn-primary");
+		PO_NewOfferView.fillForm(driver, "Prueba", "prueba nuevo", 50.2);
+		assertTrue(driver.findElements(By.xpath("//table[@id='createdOffers']/tbody/tr")).size() == 4);
+	}
+
+	@Test
+	public void PR17() {
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		PO_LoginView.fillForm(driver, "gema@email.com", "123456");
+		assertTrue(driver.findElements(By.xpath("//table[@id='createdOffers']/tbody/tr")).size() == 3);
+
+		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "offersCreating-menu",
+				PO_View.getTimeout());
 		elementos.get(0).click();
-		// Volvemos a la última pagina
-		elementos = PO_View.checkElement(driver, "free", "//a[contains(@class, 'pagelink')]");
-		elementos.get(3).click();
-		// Y esperamos a que NO aparezca la ultima "Nueva Nota 1"
-		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "Nota Nueva 1", PO_View.getTimeout());
-		// Ahora nos desconectamos
-		PO_PrivateView.clickOption(driver, "logout", "text", "Identifícate");
+		PO_HomeView.clickOption(driver, "/offer/add", "class", "btn btn-primary");
+		PO_NewOfferView.fillForm(driver, "", "prueba nuevo", 50.2);
+		driver.findElement(By.id("title")).getAttribute("validationMessage");
+		// PO_View.checkElement(driver, "text", "Este campo no puede estar vacío");
+		assertTrue(driver.findElements(By.xpath("//table[@id='createdOffers']/tbody/tr")).size() == 3);
+
+	}
+
+	@Test
+	public void PR18() {
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		PO_LoginView.fillForm(driver, "gema@email.com", "123456");
+		assertTrue(driver.findElements(By.xpath("//table[@id='createdOffers']/tbody/tr")).size() == 3);
+
+	}
+
+	@Test
+	public void PR19() {
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		PO_LoginView.fillForm(driver, "gema@email.com", "123456");
+		assertTrue(driver.findElements(By.xpath("//table[@id='createdOffers']/tbody/tr")).size() == 3);
+		driver.findElements(By.linkText("Eliminar")).get(0).click();
+		assertTrue(driver.findElements(By.xpath("//table[@id='createdOffers']/tbody/tr")).size() == 2);
+
+	}
+
+	@Test
+	public void PR20() {
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		PO_LoginView.fillForm(driver, "gema@email.com", "123456");
+		assertTrue(driver.findElements(By.xpath("//table[@id='createdOffers']/tbody/tr")).size() == 3);
+		driver.findElements(By.linkText("Eliminar")).get(driver.findElements(By.linkText("Eliminar")).size() - 1)
+				.click();
+		assertTrue(driver.findElements(By.xpath("//table[@id='createdOffers']/tbody/tr")).size() == 2);
+
+	}
+
+	@Test
+	public void PR21() {
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		PO_LoginView.fillForm(driver, "gema@email.com", "123456");
+		PO_HomeView.clickOption(driver, "catalogue", "class", "btn btn-primary");
+		assertTrue(driver.findElements(By.xpath("//table[@id='tableOffers']/tbody/tr")).size() == 12);
+		WebElement busqueda = driver.findElement(By.name("searchText"));
+		busqueda.click();
+		busqueda.clear();
+		busqueda.sendKeys("");
+		driver.findElement(By.id("botonS")).click();		
+		assertTrue(driver.findElements(By.xpath("//table[@id='tableOffers']/tbody/tr")).size() == 12);
+
 	}
 
 }

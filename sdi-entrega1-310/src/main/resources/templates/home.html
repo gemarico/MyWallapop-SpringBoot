@@ -13,8 +13,8 @@
 		
 		<div class="table table-responsive"
 			sec:authorize="hasRole('ROLE_CLIENT')">
-			<table class="table table-hover" th:fragment="tableOffers"
-				id="tableOffers">
+			<table class="table table-hover" th:fragment="personalData"
+				id="personalData">
 				<thead>
 					<tr>
 						<th th:text="#{name.message}"></th>
@@ -36,7 +36,7 @@
 			<hr>
 			<hr>
 			<div class="table table-responsive">
-				<table class="table table-hover">
+				<table class="table table-hover" id="createdOffers">
 					<thead>
 						<tr>
 							<th th:text="#{offer.title}"></th>

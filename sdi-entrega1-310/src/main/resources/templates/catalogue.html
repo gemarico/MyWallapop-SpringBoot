@@ -14,7 +14,7 @@
 			<div class="form-group">
 				<input name="searchText" type="text" class="form-control">
 			</div>
-			<button type="submit" class="btn btn-primary"
+			<button type="submit" class="btn btn-primary" id="botonS"
 				th:text="#{search.message}"></button>
 		</form>
 	</div>
@@ -56,7 +56,7 @@
 						</td>
 						<td>
 							<div th:unless="${flash.sold}">
-								<button name="buy" class="btn btn-primary"
+								<button name="buy" class="btn btn-secondary"
 									th:id="${'buyButtonf' + flash.id}" th:text="#{buy.message}"></button>
 								<script th:inline="javascript">
 								 /*<![CDATA[*/
@@ -120,7 +120,7 @@
 						</td>
 						<td>
 							<div th:unless="${offer.sold}">
-								<button name="buy" class="btn btn-primary"
+								<button name="buy" class="btn btn-secondary"
 									th:id="${'buyButton' + offer.id}" th:text="#{buy.message}"></button>
 								<script th:inline="javascript">
 								 /*<![CDATA[*/

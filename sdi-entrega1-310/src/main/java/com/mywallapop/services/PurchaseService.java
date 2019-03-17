@@ -36,6 +36,8 @@ public class PurchaseService {
 			purchase.getBuyer().setCredits(user.getCredits() - offer.getPrice());
 			purchase.getBuyer().getPurchased().add(purchase);
 			addPurchase(purchase);
+			offer.setPurchase(purchase);
+			user.getPurchased().add(purchase);
 			offersRepository.save(purchase.getOffer());
 			usersRepository.save(purchase.getBuyer());
 		}

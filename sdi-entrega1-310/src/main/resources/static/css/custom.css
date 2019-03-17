@@ -6,7 +6,7 @@ html {
 	min-height: 100%;
 }
 
-body {	
+body {
 	margin-bottom: 60px;
 	font-family: Raleway;
 	font-style: normal;
@@ -14,17 +14,50 @@ body {
 	text-align: center;
 	background: url("/img/fondo-b.jpg");
 	background-size: cover;
-	background-position: center center;	
+	background-position: center center;
 	background-repeat: no-repeat;
+}
+
+
+
+nav {
+	height: 50px;
+}
+
+@media screen and (max-width: 1400px) {
+	body {
+		font-size: 14px;
+		
+	}
+	ul li {
+		font-size: 11px;
+	}
+	h1, h2, h3, h4 {
+		font-size: 16px;
+		
+	}
+	button {
+		font-size: 14px;
+	}
 }
 
 @media screen and (max-width: 700px) {
 	body {
-		font-size: 11px;
-			    
+		font-size: 10px;
+		
+	}
+	nav {
+		height: 100%;
+	}
+	ul li {
+		font-size: 9px;
 	}
 	h1, h2, h3, h4 {
-		font-size: 12px;
+		font-size: 11px;
+		
+	}
+	button {
+		font-size: 11px;
 	}
 }
 

@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.mywallapop.entities.Conversation;
 import com.mywallapop.entities.Offer;
 import com.mywallapop.entities.User;
 import com.mywallapop.repositories.OffersRepository;
@@ -46,7 +47,29 @@ public class OffersService {
 	}
 
 	public void deleteOffer(Long id) {
-		offersRepository.deleteById(id);
+		Offer offer = getOffer(id);
+
+		for (Conversation c : offer.getConversations()) {
+			c.setMessages(null);
+			c.setOffer(null);
+			c.setSender(null);
+		}
+		offer.setConversations(null);
+
+		if (offer.getPurchase() != null) {
+			
+			offer.getPurchase().setOffer(null);
+			offer.getPurchase().setBuyer(null);
+			offer.getUser().getPurchased().remove(offer.getPurchase());
+			
+			
+		}
+		offer.getUser().getOffers().remove(offer);
+		offer.setUser(null);
+		offer.setPurchase(null);
+
+		offersRepository.delete(offer);
+
 	}
 
 	public Page<Offer> getOffers(Pageable pageable, User user) {
