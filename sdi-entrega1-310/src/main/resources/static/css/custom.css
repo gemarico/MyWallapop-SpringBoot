@@ -22,6 +22,7 @@ body {
 
 nav {
 	height: 50px;
+	margin-bottom: 20px;
 }
 
 @media screen and (max-width: 1400px) {
@@ -31,6 +32,10 @@ nav {
 	}
 	ul li {
 		font-size: 11px;
+	}
+	
+	nav {
+		height: 100%;
 	}
 	h1, h2, h3, h4 {
 		font-size: 16px;
@@ -85,6 +90,7 @@ textarea {
 
 h1, h2 {
 	margin-top: 40px;
+	font-size: 18px;
 }
 
 hr {
@@ -96,6 +102,7 @@ pagination {
 }
 
 footer {
+	color:black;
 	position: absolute;
 	margin-top: 60px;
 	bottom: 0;
@@ -108,3 +115,4 @@ footer {
 }
 
 /* Sticky footer styles-------------------------------------------------- */
+

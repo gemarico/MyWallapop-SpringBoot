@@ -2,6 +2,8 @@ package com.mywallapop.controllers;
 
 import java.security.Principal;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +25,9 @@ import com.mywallapop.validators.SignUpFormValidator;
 
 @Controller
 public class UsersController {
+	
+	private static final Logger logger = LogManager.getLogger(UsersController.class);
+
 	@Autowired
 	private UsersService usersService;
 
@@ -63,6 +68,7 @@ public class UsersController {
 
 		usersService.addUser(user);
 		securityService.autoLogin(user.getEmail(), user.getPasswordConfirm());
+		logger.debug(String.format("Auto login %s successfully!", user.getEmail()));
 		return "redirect:home";
 	}
 
@@ -106,6 +112,7 @@ public class UsersController {
 		User activeUser = usersService.getUserByEmail(auth.getName());
 		Offer offer = offersService.getOffer(id);
 		conversService.addMessage(offer, activeUser, message);
+		logger.debug(String.format("Message from %s to %s successfully!", activeUser.getEmail(), offer.getUser().getEmail()));
 		return "user/conver";
 	}
 
@@ -127,6 +134,7 @@ public class UsersController {
 		User activeUser = usersService.getUserByEmail(auth.getName());
 		Offer offer = offersService.getOffer(id);
 		conversService.addMessage(offer, activeUser, message);
+		logger.debug(String.format("Message from %s to %s successfully!", activeUser.getEmail(), offer.getUser().getEmail()));
 		return "redirect:/user/messagelist";
 	}
 
@@ -142,7 +150,11 @@ public class UsersController {
 
 	@RequestMapping("/user/conver/delete/{id}")
 	public String deleteConver(@PathVariable String id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		User activeUser = usersService.getUserByEmail(email);
 		conversService.delete(Long.parseLong(id));
+		logger.debug(String.format("Conversation from %s deleted successfully!",activeUser.getEmail() ));
 		return "redirect:/user/messagelist";
 	}
 

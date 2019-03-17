@@ -4,6 +4,8 @@ import java.util.*;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ import com.mywallapop.repositories.UsersRepository;
 
 @Service
 public class UsersService {
+	
+	private static final Logger logger = LogManager.getLogger(UsersService.class);
 
 	@Autowired
 	private UsersRepository usersRepository;
@@ -41,9 +45,12 @@ public class UsersService {
 
 	public void addUser(User user) {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-		if (user.getEmail() != "admin@email.com")
+		if (user.getEmail() != "admin@email.com") {
 			user.setRole("ROLE_CLIENT");
+			user.setCredits(100.0);
+		}
 		usersRepository.save(user);
+		logger.debug(String.format("User %s successfully registered!", user.getEmail()));
 
 	}
 
@@ -88,6 +95,7 @@ public class UsersService {
 			user.setPurchased(null);
 
 			usersRepository.delete(user);
+			logger.debug(String.format("User %s successfully deleted!", user.getEmail()));
 		}
 	}
 

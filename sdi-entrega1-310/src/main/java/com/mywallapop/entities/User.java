@@ -34,7 +34,7 @@ public class User {
 		this.name = name;
 		this.lastName = lastName;
 		this.email = email;
-		this.credits = 100.0;
+		this.credits = 100;
 	}
 
 	public User() {

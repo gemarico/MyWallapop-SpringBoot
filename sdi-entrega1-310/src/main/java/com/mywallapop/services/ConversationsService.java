@@ -15,6 +15,7 @@ import com.mywallapop.repositories.MessagesRepository;
 
 @Service
 public class ConversationsService {
+	
 
 	@Autowired
 	private MessagesRepository messagesRepository;
@@ -84,6 +85,7 @@ public class ConversationsService {
 		conver.setMessages(messages);
 		converRepository.save(conver);
 		messagesRepository.saveAll(messages);
+		
 
 	}
 

@@ -2,6 +2,8 @@ package com.mywallapop.controllers;
 
 import java.util.LinkedList;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -25,6 +27,7 @@ import com.mywallapop.validators.AddOfferFormValidator;
 
 @Controller
 public class OffersControllers {
+	private static final Logger logger = LogManager.getLogger(OffersControllers.class);
 
 	@Autowired
 	private OffersService offersService;
@@ -54,12 +57,21 @@ public class OffersControllers {
 		}
 
 		offersService.addOffer(offer, activeUser, id);
+		logger.debug(String.format("Offer from %s added successfully!", activeUser.getEmail()));
 		return "redirect:/home";
 	}
 
 	@RequestMapping("/offer/delete/{id}" )
-	public String deleteMark(@PathVariable Long id) {
+	public String deleteMark(@PathVariable Long id) {		
+		logger.debug(String.format("Offer from %s deleted successfully!", offersService.getOffer(id).getUser().getEmail()));
 		offersService.deleteOffer(id);
+		return "redirect:/home";
+	}
+	
+	@RequestMapping("/offer/flash/{id}" )
+	public String flash(@PathVariable Long id) {
+		offersService.convertFlash(id);
+		logger.debug(String.format("Offer converted to flash/normal successfully!"));
 		return "redirect:/home";
 	}
 
@@ -93,6 +105,7 @@ public class OffersControllers {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User activeUser = usersService.getUserByEmail(auth.getName());
 		purchaseService.buyOffer(activeUser, offersService.getOffer(id));
+		logger.debug(String.format("Offer from %s adquired successfully by %s!",  offersService.getOffer(id).getUser().getEmail() , activeUser.getEmail()));
 		return "redirect:/catalogue/update";
 
 	}
@@ -102,6 +115,7 @@ public class OffersControllers {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User activeUser = usersService.getUserByEmail(auth.getName());
 		purchaseService.buyOffer(activeUser, offersService.getOffer(id));
+		logger.debug(String.format("Offer from %s adquired successfully by %s!",  offersService.getOffer(id).getUser().getEmail() , activeUser.getEmail()));
 		return "redirect:/catalogue/update/flash";
 
 	}

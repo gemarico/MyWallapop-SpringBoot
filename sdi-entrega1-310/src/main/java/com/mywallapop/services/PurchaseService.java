@@ -40,6 +40,7 @@ public class PurchaseService {
 			user.getPurchased().add(purchase);
 			offersRepository.save(purchase.getOffer());
 			usersRepository.save(purchase.getBuyer());
+
 		}
 	}
 

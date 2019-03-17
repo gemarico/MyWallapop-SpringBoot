@@ -89,7 +89,7 @@ public class InsertSampleDataService {
 		Offer offer6 = (new Offer("Botella", "Ecológica", convertDate("2018-05-16"), 4.0, user2));
 
 		Offer offer7 = (new Offer("Set Maquillaje", "Maybelline", convertDate("2017-03-27"), 40.0, user3));
-		Offer offer8 = (new Offer("Marco", "para fotos", convertDate("2017-03-27"), 10.0, user3));
+		Offer offer8 = (new Offer("Marco", "para fotos", convertDate("2017-03-27"), 70.0, user3));
 		Offer offer9 = (new Offer("Funda móvil", "Sin usar", convertDate("2017-03-27"), 10.0, user3));
 
 		Offer offer10 = (new Offer("Casco de moto", "regulable", convertDate("2019-02-14"), 700.0, user4));

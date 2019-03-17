@@ -3,6 +3,7 @@ package com.mywallapop.services;
 import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -57,12 +58,11 @@ public class OffersService {
 		offer.setConversations(null);
 
 		if (offer.getPurchase() != null) {
-			
+
 			offer.getPurchase().setOffer(null);
 			offer.getPurchase().setBuyer(null);
 			offer.getUser().getPurchased().remove(offer.getPurchase());
-			
-			
+
 		}
 		offer.getUser().getOffers().remove(offer);
 		offer.setUser(null);
@@ -87,6 +87,20 @@ public class OffersService {
 		searchText = "%" + searchText + "%";
 		offers = offersRepository.searchByTitle(pageable, searchText, user);
 		return offers;
+	}
+
+	public void convertFlash(Long id) {
+		if (getOffer(id).isFlash() == false && getOffer(id).getUser().getCredits() >= 20.0) {
+			getOffer(id).getUser().setCredits(getOffer(id).getUser().getCredits() - 20);
+			getOffer(id).setFlash(true);
+
+			offersRepository.save(getOffer(id));
+		} else if (getOffer(id).isFlash() == true) {
+			getOffer(id).setFlash(false);
+
+			offersRepository.save(getOffer(id));
+		}
+
 	}
 
 }
