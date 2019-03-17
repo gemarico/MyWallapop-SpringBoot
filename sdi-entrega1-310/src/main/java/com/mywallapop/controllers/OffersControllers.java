@@ -45,7 +45,7 @@ public class OffersControllers {
 	}
 
 	@RequestMapping(value = "/offer/add", method = RequestMethod.POST)
-	public String setOffer(Model model, @Validated Offer offer, BindingResult result, @RequestParam("id") String id) {
+	public String setOffer(Model model, @Validated Offer offer, BindingResult result, @RequestParam(value = "id", required=false) String id) {
 		addOfferFormValidator.validate(offer, result);
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User activeUser = usersService.getUserByEmail(auth.getName());
@@ -57,7 +57,7 @@ public class OffersControllers {
 		return "redirect:/home";
 	}
 
-	@RequestMapping("/offer/delete/{id}")
+	@RequestMapping("/offer/delete/{id}" )
 	public String deleteMark(@PathVariable Long id) {
 		offersService.deleteOffer(id);
 		return "redirect:/home";
